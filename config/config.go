@@ -3,7 +3,7 @@ package config
 import (
 	"flag"
 	"fmt"
-	"github.com/ouqiang/supervisor-event-listener/utils"
+	"supervisor-event-listener/utils"
 	"gopkg.in/ini.v1"
 	"os"
 	"strings"
@@ -28,6 +28,7 @@ type Slack struct {
 
 // 邮件服务器
 type MailServer struct {
+	Subject    string
 	User     string
 	Password string
 	Host     string

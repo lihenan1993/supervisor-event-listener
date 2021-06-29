@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/go-gomail/gomail"
-	"github.com/ouqiang/supervisor-event-listener/event"
 	"strings"
+	"supervisor-event-listener/event"
 )
 
 type Mail struct{}
@@ -16,9 +16,9 @@ func (mail *Mail) Send(message event.Message) error {
 	gomailMessage := gomail.NewMessage()
 	gomailMessage.SetHeader("From", Conf.MailServer.User)
 	gomailMessage.SetHeader("To", Conf.MailUser.Email...)
-	gomailMessage.SetHeader("Subject", "Supervisor事件通知")
+	gomailMessage.SetHeader("Subject", Conf.MailServer.Subject)
 	gomailMessage.SetBody("text/html", body)
-	mailer := gomail.NewPlainDialer(
+	mailer := gomail.NewDialer(
 		Conf.MailServer.Host,
 		Conf.MailServer.Port,
 		Conf.MailServer.User,
