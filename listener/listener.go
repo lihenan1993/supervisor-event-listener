@@ -26,9 +26,11 @@ func Start() {
 // 监听事件, 从标准输入获取事件内容
 func listen() {
 	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("reader",reader)
 	for {
 		ready()
 		header, err := readHeader(reader)
+		fmt.Println("header",header)
 		if err != nil {
 			failure(err)
 			continue
@@ -38,11 +40,9 @@ func listen() {
 			failure(err)
 			continue
 		}
-		// 只处理进程异常退出事件
-		if header.EventName == "PROCESS_STATE_EXITED" ||
-			header.EventName == "PROCESS_STATE_FATAL"{
-			notify.Push(header, payload)
-		}
+
+		fmt.Println("payload",payload)
+		notify.Push(header, payload)
 		success()
 	}
 }
@@ -63,6 +63,14 @@ func readHeader(reader *bufio.Reader) (*event.Header, error) {
 	return header, nil
 }
 
+func ready() {
+	fmt.Fprint(os.Stdout, "READY\n")
+}
+
+func success() {
+	fmt.Fprint(os.Stdout, "RESULT 2\nOK")
+}
+
 // 读取payload
 func readPayload(reader *bufio.Reader, payloadLen int) (*event.Payload, error) {
 	// 读取payload
@@ -81,14 +89,6 @@ func readPayload(reader *bufio.Reader, payloadLen int) (*event.Payload, error) {
 	}
 
 	return payload, nil
-}
-
-func ready() {
-	fmt.Fprint(os.Stdout, "READY\n")
-}
-
-func success() {
-	fmt.Fprint(os.Stdout, "RESULT 2\nOK")
 }
 
 func failure(err error) {

@@ -44,6 +44,7 @@ func start() {
 		if notifyHandler == nil {
 			continue
 		}
+		fmt.Println("send", Conf.NotifyType, message)
 		go send(notifyHandler, message)
 		time.Sleep(1 * time.Second)
 	}
